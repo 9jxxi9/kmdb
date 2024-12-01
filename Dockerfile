@@ -1,4 +1,4 @@
 FROM ubuntu:latest
-LABEL authors="vahka"
+LABEL authors="JB"
 
 ENTRYPOINT ["top", "-b"]
