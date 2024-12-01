@@ -1,64 +1,195 @@
 # Movie Database API
 
-## Project Description
+## Project Overview
 
-This API is designed to manage a database of movies, actors, and genres. It implements Create, Read, Update, and Delete (CRUD) functions for movies, actors, and genres, and also provides capabilities for filtering and searching.
+This project is a robust REST API for managing a movie database using Spring Boot and JPA. It allows users to store information about movies, including their genres and the actors who starred in them. The API supports CRUD operations for movies, genres, and actors, and provides endpoints to retrieve movies by genre or release year, and to manage associations between movies and actors.
 
-## Instructions for Installing and Running the Application
+## Setup and Installation
+
+### Prerequisites
+
+- Java 17 or higher
+- Maven 3.6.3 or higher
+- SQLite
+
+### Installation Steps
 
 1. **Clone the repository:**
-   ```bash
-   git clone <https://gitea.kood.tech/juriboikov/kmdb.git>
-   cd movie-api
-Run the application:
-./mvnw spring-boot:run
-API Usage Examples
+   ```sh
+   git clone https://gitea.kood.tech/juriboikov/kmdb
+   ```
 
-Get all actors:
-GET /api/actors
+2. **Build the project:**
+   ```sh
+   mvn clean install
+   ```
 
-Search actors by name:
-GET /api/actors/search?name=Tom
+3. **Run the application:**
+   ```sh
+   mvn spring-boot:run
+   ```
 
-Create a new actor:
-POST /api/actors
-Content-Type: application/json
+4. **Database Configuration:**
+   The application uses SQLite as the database. The configuration is set in the `application.properties` file:
+   ```properties
+   spring.datasource.url=jdbc:sqlite:movies.db
+   spring.datasource.driver-class-name=org.sqlite.JDBC
+   spring.jpa.database-platform=org.hibernate.dialect.SQLiteDialect
+   spring.jpa.hibernate.ddl-auto=update
+   ```
 
-{
-  "name": "Tom Hanks",
-  "birthDate": "1956-07-09"
-}
+## Usage Guide
 
-Get a movie by ID:
-GET /api/movies/{id}
+### API Endpoints
 
-Delete a genre:
-DELETE /api/genres/{genreId}
+#### Genre Endpoints
 
-Filter movies by genre:
-GET /api/movies?genreId={genreId}
+- **Create Genre:**
+  ```http
+  POST /api/genres
+  ```
+  Request Body:
+  ```json
+  {
+  "name": "Action"
+  }
+  ```
 
-Filter movies by title:
-GET /api/movies?title=Matrix
+- **Get All Genres:**
+  ```http
+  GET /api/genres
+  ```
 
-Pagination:
-GET /api/movies?page=0&size=10
+- **Get Genre by ID:**
+  ```http
+  GET /api/genres/{id}
+  ```
 
+- **Update Genre:**
+  ```http
+  PATCH /api/genres/{id}
+  ```
+  Request Body:
+  ```json
+  {
+  "name": "Adventure"
+  }
+  ```
 
+- **Delete Genre:**
+  ```http
+  DELETE /api/genres/{id}
+  ```
 
-Additional Features
-Case-insensitive search for actors and movies.
-Filtering movies by genres and actors.
-Pagination for retrieving large amounts of data.
+#### Movie Endpoints
 
+- **Create Movie:**
+  ```http
+  POST /api/movies
+  ```
+  Request Body:
+  ```json
+  {
+  "title": "Inception",
+  "releaseYear": "2010",
+  "duration": "02:28:00",
+  "genres": [1, 2],
+  "actors": [1, 2, 3]
+  }
+  ```
 
-Testing
-Test the API using Postman or cURL to ensure its functionality. 
+- **Get All Movies:**
+  ```http
+  GET /api/movies
+  ```
 
+- **Get Movie by ID:**
+  ```http
+  GET /api/movies/{id}
+  ```
 
+- **Update Movie:**
+  ```http
+  PATCH /api/movies/{id}
+  ```
+  Request Body:
+  ```json
+  {
+  "title": "Inception Updated",
+  "releaseYear": "2020",
+  "duration": "01:20:20"
+  }
+  ```
 
-Technologies Used
-Spring Boot: The main framework for developing the application.
-Spring Data JPA: For working with the database and performing CRUD operations.
-SQLite: A lightweight relational database for data storage.
-Maven: A project management system for building and dependencies.
+- **Delete Movie:**
+  ```http
+  DELETE /api/movies/{id}
+  ```
+
+- **Search Movies by Title:**
+  ```http
+  GET /api/movies?title=Inception
+  ```
+
+- **Filter Movies by Genre:**
+  ```http
+  GET /api/movies?genreId=1
+  ```
+
+- **Filter Movies by Release Year:**
+  ```http
+  GET /api/movies?releaseYear=2010
+  ```
+
+#### Actor Endpoints
+
+- **Create Actor:**
+  ```http
+  POST /api/actors
+  ```
+  Request Body:
+  ```json
+  {
+  "name": "Leonardo DiCaprio",
+  "birthDate": "1974-11-11"
+  }
+  ```
+
+- **Get All Actors:**
+  ```http
+  GET /api/actors
+  ```
+
+- **Get Actor by ID:**
+  ```http
+  GET /api/actors/{id}
+  ```
+
+- **Update Actor:**
+  ```http
+  PATCH /api/actors/{id}
+  ```
+  Request Body:
+  ```json
+  {
+  "name": "Leonardo DiCaprio Updated",
+  "birthDate": "1974-11-12"
+  }
+  ```
+
+- **Delete Actor:**
+  ```http
+  DELETE /api/actors/{id}
+  ```
+
+- **Search Actors by Name:**
+  ```http
+  GET /api/actors?name=Leonardo
+  ```
+
+## Additional Features
+
+- **Pagination:** Implemented for GET requests that return multiple entities.
+- **Basic Search:** Implemented for movies by title.
+- **Error Handling:** Includes input validation, custom exceptions, and global exception handling.
+- **Tests:** Implemented test cases for each controller.
