@@ -193,3 +193,5 @@ This project is a robust REST API for managing a movie database using Spring Boo
 - **Basic Search:** Implemented for movies by title.
 - **Error Handling:** Includes input validation, custom exceptions, and global exception handling.
 - **Tests:** Implemented test cases for each controller.
+
+
